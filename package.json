@@ -19,6 +19,6 @@
   "homepage": "https://github.com/joseph-vega12/Github-RestApi#readme",
   "dependencies": {
     "express": "^4.18.1",
-    "node-fetch": "^3.2.9"
+    "node-fetch": "^2.6.7"
   }
 }
