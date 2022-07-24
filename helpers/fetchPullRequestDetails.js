@@ -3,35 +3,26 @@ const URL =
   "https://api.github.com/repos/expressjs/express/pulls?state=open&per_page=3";
 
 async function fetchPullRequestDetails() {
-  return await fetch(URL)
-    .then((pullRequest) => pullRequest.json())
-    .then((pullRequest) => {
-      return fetchCommitDetails(pullRequest);
-    })
-    .catch((error) => {
-      return new Error(error);
-    });
+  const fetchedPullRequests = await fetch(URL);
+  const fetchPullRequestsJson = await fetchedPullRequests.json();
+  return fetchCommitDetails(fetchPullRequestsJson);
 }
 
 async function fetchCommitDetails(fetchedPullRequests) {
-  return await Promise.all(
-    fetchedPullRequests.map((pullRequest) => {
-      return fetch(pullRequest.commits_url)
-        .then((commits) => commits.json())
-        .then((commits) => {
-          return {
-            id: pullRequest.id,
-            number: pullRequest.number,
-            title: pullRequest.title,
-            author: pullRequest.user.login,
-            commit_count: commits.length,
-          };
-        })
-        .catch((error) => {
-          return new Error(error);
-        });
+  const promiseResult = await Promise.all(
+    fetchedPullRequests.map(async (pullRequest) => {
+      const fetchedCommits = await fetch(pullRequest.commits_url);
+      const fetchedCommitsJson = fetchedCommits.json();
+      return {
+        id: pullRequest.id,
+        number: pullRequest.number,
+        title: pullRequest.title,
+        author: pullRequest.user.login,
+        commit_count: fetchedCommitsJson.length,
+      };
     })
   );
+  return promiseResult;
 }
 
 module.exports = fetchPullRequestDetails;
