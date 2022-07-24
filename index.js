@@ -5,8 +5,6 @@ const PORT = 4000;
 //  Request to Api functionality
 const fetchPullRequestDetails = require("./helpers/fetchPullRequestDetails");
 
-app.use(express.json());
-
 app.get("/", async (req, res) => {
   try {
     const fetchedPullRequests = await fetchPullRequestDetails();
