@@ -15,7 +15,7 @@ async function fetchCommitDetails(fetchedPullRequests) {
   const promiseResult = await Promise.all(
     fetchedPullRequests.map(async (pullRequest) => {
       const fetchedCommits = await fetch(pullRequest.commits_url, options);
-      const fetchedCommitsJson = fetchedCommits.json();
+      const fetchedCommitsJson = await fetchedCommits.json();
       return {
         id: pullRequest.id,
         number: pullRequest.number,
