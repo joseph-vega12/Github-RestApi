@@ -11,7 +11,6 @@ app.get("/", async (req, res) => {
     const fetchedPullRequests = await fetchPullRequestDetails();
     res.status(200).send(fetchedPullRequests);
   } catch (error) {
-    console.log(error);
     res.status(500).send({ message: "Internal Server Error" });
   }
 });
